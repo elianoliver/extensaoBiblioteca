@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Minha Extensão</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      outline: 1px solid red;
+    }
+
+    body {
+      width: 300px;
+      font-family: Arial, sans-serif;
+      padding: 5;
+      background-color: #f1f1f1;
+    }
+
+    #titulo {
+      color: #333;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    #buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: nowrap;
+      margin-top: 10px;
+      /* display: none; */
+    }
+
+    button {
+      width: fit-content;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h3 id="titulo">Verificando abas do pergamum...</h3>
+  <div id="buttons">
+    <a href="dashboard/situacao.html"><button>Verificar Situação</button></a>
+    <a href="dashboard/cnd.html"><button>Gerar CND</button></a>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>
