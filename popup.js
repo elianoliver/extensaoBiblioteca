@@ -26,7 +26,6 @@ chrome.tabs.query({}, (tabs) => {
       titulo.textContent = 'Por favor, abra a página inicial do Pergamum';
       botoes.style.display = 'none'; // Esconde os botões se não estiver na página inicial
     } else {
-      titulo.textContent = 'Pergamum está aberto';
       botoes.style.display = 'flex'; // Mostra os botões se estiver na página inicial
     }
   }

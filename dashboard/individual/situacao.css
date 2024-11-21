@@ -1,0 +1,180 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-width: 320px;
+    max-width: 320px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    margin: 0;
+    height: auto;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-bottom: 5rem;
+}
+
+#titulo {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Novo container para input e botão */
+.input-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    height: 42px;
+}
+
+#botaoCriarTabela {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(52,152,219,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#botaoVerificarSituacao {
+    width: 100%;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(52,152,219,0.2);
+    margin: 0.5rem 0;
+}
+
+#botaoCriarTabela:hover,
+#botaoVerificarSituacao:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(52,152,219,0.3);
+}
+
+#botaoCriarTabela:active,
+#botaoVerificarSituacao:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(52,152,219,0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+table, th, td {
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.botaoRemover {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.botaoRemover:hover {
+    background-color: #c0392b;
+}
+
+#containerFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    visibility: hidden;
+    background-color: #2c3e50;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+#tabelaContainer {
+    display: none;  /* Esconde a tabela por padrão */
+    margin-bottom: 1rem; /* Adiciona margem inferior na tabela */
+    overflow-y: auto; /* Permite rolagem se necessário */
+}
+
+#totalMatriculas {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 45%;
+}
+
+#containerFooter #botaoVerificarSituacao {
+    width: 45%;
+    margin: 0;
+}
+
+/* removendo spinner do input de matriculas */
+.no-spinners {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .no-spinners::-webkit-inner-spin-button,
+  .no-spinners::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
