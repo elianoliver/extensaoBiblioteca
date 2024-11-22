@@ -10,17 +10,24 @@
     <h3 id="titulo">SITUAÇÃO DO ALUNO</h3>
 
         <div class="input-container">
-            <input type="number" id="valores" placeholder="Cole a matrícula aqui..." class="no-spinners">
-            <button id="botaoCriarTabela">+</button>
+            <input type="number" id="matricula" placeholder="Cole a matrícula aqui..." class="no-spinners">
+            <button id="btAdicionarItem">+</button>
         </div>
 
 
         <div id="tabelaContainer"></div>
 
+        <div class="parametros-container">
+            <input type="text" id="dtid" placeholder="dtid ex: z__h_0" value="">
+            <input type="text" id="uuid" placeholder="uuid ex: bBwR8" value="">
+        </div>
+
         <div id="containerFooter">
             <div id="totalMatriculas"></div>
             <button id="botaoVerificarSituacao">Verificar Situação</button>
         </div>
+
+
 
 
         <script type="module" src="situacao.js"></script>

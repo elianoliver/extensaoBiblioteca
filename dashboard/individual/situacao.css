@@ -1,62 +1,92 @@
+/* Reset e configurações globais */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Layout base */
 body {
-    min-width: 320px;
-    max-width: 320px;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    padding: 1.5rem;
+    min-width: 360px;
+    max-width: 500px;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding-top: 1.5rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
     margin: 0;
     height: auto;
-    max-height: 600px;
-    overflow-y: auto;
-    padding-bottom: 5rem;
+    /* min-height: 100vh; */
+    position: relative;
+    /* padding-bottom: calc(5rem + 72px); Altura do footer (72px) + padding extra */
 }
 
+/* Cabeçalho */
 #titulo {
-    color: #2c3e50;
-    font-size: 1.25rem;
+    color: #1a1a1a;
+    font-size: 1.4rem;
     text-align: center;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
-/* Novo container para input e botão */
+/* Container de input */
 .input-container {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
     align-items: center;
 }
 
-input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    height: 42px;
+/* Container de parâmetros */
+.parametros-container {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
-#botaoCriarTabela {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
-    background-color: #3498db;
+.parametros-container input {
+    flex: 1;
+    min-width: 0; /* Permite que os inputs diminuam conforme necessário */
+}
+
+
+/* Estilização dos inputs */
+input {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    height: 48px;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Botões */
+#btAdicionarItem {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    background-color: #3b82f6;
     border: none;
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: all 0.2s ease;
     font-weight: 500;
-    box-shadow: 0 2px 5px rgba(52,152,219,0.2);
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,116 +95,113 @@ input {
 
 #botaoVerificarSituacao {
     width: 100%;
-    background-color: #3498db;
+    background-color: #3b82f6;
     border: none;
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.875rem 1.5rem;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: all 0.2s ease;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(52,152,219,0.2);
-    margin: 0.5rem 0;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+    margin: 0.75rem 0;
 }
 
-#botaoCriarTabela:hover,
+#btAdicionarItem:hover,
 #botaoVerificarSituacao:hover {
-    background-color: #2980b9;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(52,152,219,0.3);
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-#botaoCriarTabela:active,
-#botaoVerificarSituacao:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(52,152,219,0.2);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Container da tabela */
+#tabelaContainer {
+    overflow-x: auto;
+    max-width: 100%;
     margin: 1rem 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    -webkit-overflow-scrolling: touch;
 }
 
-table, th, td {
-    border: 1px solid #e0e0e0;
-    padding: 0.75rem;
-    text-align: left;
+/* Estilização da tabela */
+table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
 }
 
 th {
-    background-color: #f8f9fa;
-    color: #2c3e50;
-    font-weight: 500;
+    background-color: #f8fafc;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
 }
 
-.botaoRemover {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: all 0.2s ease;
+td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+    font-size: 0.8rem;
+    white-space: nowrap;
 }
 
-.botaoRemover:hover {
-    background-color: #c0392b;
-}
+/* Larguras das colunas */
+th:nth-child(1), td:nth-child(1) { min-width: 80px; }
+th:nth-child(2), td:nth-child(2) { min-width: 150px; }
+th:nth-child(3), td:nth-child(3) { min-width: 180px; }
+th:nth-child(4), td:nth-child(4) { min-width: 100px; }
+th:nth-child(5), td:nth-child(5) { min-width: 100px; }
 
+/* Footer */
 #containerFooter {
+    /* position: fixed; */
+    /* bottom: 0; */
+    /* left: 0; */
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    visibility: hidden;
-    background-color: #2c3e50;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-}
-
-#tabelaContainer {
-    display: none;  /* Esconde a tabela por padrão */
-    margin-bottom: 1rem; /* Adiciona margem inferior na tabela */
-    overflow-y: auto; /* Permite rolagem se necessário */
+    /* z-index: 1000; */
 }
 
 #totalMatriculas {
-    color: white;
+    color: #1a1a1a;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     width: 45%;
 }
 
-#containerFooter #botaoVerificarSituacao {
-    width: 45%;
-    margin: 0;
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-/* removendo spinner do input de matriculas */
-.no-spinners {
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
 
-  .no-spinners::-webkit-inner-spin-button,
-  .no-spinners::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 4px;
+}
 
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
