@@ -104,7 +104,7 @@
     text-align: center;
 }
 
-.checkbox-column input[type="checkbox"] {
+.checkbox-column input[type="checkbox"], #selectAll{
     width: 16px;
     height: 16px;
     border: 2px solid #cbd5e0;

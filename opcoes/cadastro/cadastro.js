@@ -1,8 +1,8 @@
+// cadastro.js
+import { TableModule } from '../../individual/table.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
-    const tableBody = document.querySelector('.table-container table tbody');
-    const selectedCountSpan = document.querySelector('#selectedCount');
-    const totalCountSpan = document.querySelector('#totalCount');
     const btnAlterar = document.querySelector('.buttons-container button:first-child');
     const btnVoltar = document.querySelector('.buttons-container button:last-child');
     const selectAllCheckbox = document.querySelector('.table th input[type="checkbox"]');
@@ -35,55 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const alterados = this.getItem('matriculas_dados_alterados');
             const originais = this.getItem('matriculas_dados');
             return alterados[matricula] || originais[matricula] || {};
-        }
-    };
-
-    // Table Management
-    const TableManager = {
-        createRow(matricula) {
-            const dados = StorageManager.getStudentData(matricula);
-            const tr = document.createElement('tr');
-
-            if (dados.isModified) {
-                tr.classList.add('row-alterado');
-            }
-
-            tr.innerHTML = `
-                <td class="checkbox-column">
-                    <input type="checkbox" data-matricula="${matricula}">
-                </td>
-                <td>${matricula || '-'}</td>
-                <td>${dados.nome || '-'}</td>
-                <td>${dados.email || '-'}</td>
-                <td>${dados.telefone || '-'}</td>
-                <td>${dados.cpf || '-'}</td>
-                <td>${dados.curso || '-'}</td>
-                <td>${dados.situacao || '-'}</td>
-                <td>${dados.tipo_usuario || '-'}</td>
-                <td>${dados.validade_biblioteca || '-'}</td>
-            `;
-
-            return tr;
-        },
-
-        refreshTable() {
-            const matriculas = StorageManager.getItem('matriculas');
-            if (Array.isArray(matriculas)) {
-                tableBody.innerHTML = '';
-                matriculas.forEach(matricula => {
-                    tableBody.appendChild(this.createRow(matricula));
-                });
-            }
-            this.updateCounters();
-        },
-
-        updateCounters() {
-            const matriculas = StorageManager.getItem('matriculas');
-            const totalStudents = Array.isArray(matriculas) ? matriculas.length : 0;
-            const selectedStudents = document.querySelectorAll('tbody input[type="checkbox"]:checked').length;
-
-            if (selectedCountSpan) selectedCountSpan.textContent = selectedStudents;
-            if (totalCountSpan) totalCountSpan.textContent = totalStudents;
         }
     };
 
@@ -134,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             StorageManager.setItem('matriculas_dados_alterados', dadosAlterados);
             this.resetForm();
-            TableManager.refreshTable();
+            tableModule.refreshTable();
         },
 
         resetForm() {
@@ -145,26 +96,45 @@ document.addEventListener('DOMContentLoaded', function() {
             checkboxes.forEach(cb => cb.checked = false);
 
             if (selectAllCheckbox) selectAllCheckbox.checked = false;
-            TableManager.updateCounters();
+            tableModule.updateCounters();
         }
     };
 
+    // Configuração da tabela
+    const tableConfig = {
+        container: document.querySelector('.table-container'),
+        columns: [
+            {
+                type: 'checkbox',
+                header: '<input type="checkbox" id="selectAll">',
+                onHeaderCheckboxChange: (checked) => {
+                    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+                    checkboxes.forEach(cb => cb.checked = checked);
+                    tableModule.updateCounters();
+                }
+            },
+            { header: 'Matrícula', field: 'matricula' },
+            { header: 'Nome', field: 'nome' },
+            { header: 'Email', field: 'email' },
+            { header: 'Telefone', field: 'telefone' },
+            { header: 'CPF', field: 'cpf' },
+            { header: 'Curso', field: 'curso' },
+            { header: 'Situação', field: 'situacao' },
+            { header: 'Tipo Usuário', field: 'tipo_usuario' },
+            { header: 'Validade', field: 'validade_biblioteca' }
+        ],
+        counters: {
+            selected: document.querySelector('#selectedCount'),
+            total: document.querySelector('#totalCount')
+        },
+        rowClassResolver: (dados) => dados.isModified ? 'row-alterado' : '',
+        getRowData: (matricula) => StorageManager.getStudentData(matricula)
+    };
+
+    const tableModule = new TableModule(tableConfig);
+
     // Event Listeners
     function initializeEventListeners() {
-        if (selectAllCheckbox) {
-            selectAllCheckbox.addEventListener('change', (e) => {
-                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-                checkboxes.forEach(cb => cb.checked = e.target.checked);
-                TableManager.updateCounters();
-            });
-        }
-
-        document.addEventListener('change', (e) => {
-            if (e.target.type === 'checkbox') {
-                TableManager.updateCounters();
-            }
-        });
-
         if (btnAlterar) {
             btnAlterar.addEventListener('click', () => FormManager.applyChanges());
         }
@@ -206,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialization
     function initialize() {
         StorageManager.initialize();
-        TableManager.refreshTable();
+        tableModule.initialize();
         initializeEventListeners();
     }
 
