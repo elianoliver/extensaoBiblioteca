@@ -1,0 +1,170 @@
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    width: 500px;
+}
+
+/* Layout Foundation */
+body {
+    min-width: 360px;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+/* Layout Variants */
+.container-narrow {
+    max-width: 500px;
+}
+
+/* Typography */
+.titulo {
+    color: #1a1a1a;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Form Elements Base */
+.form-control {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    height: 48px;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Table Base Styles */
+.table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.table th {
+    background-color: #f8fafc;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.table tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Button Base Styles */
+.btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+/* Footer Base Style */
+.footer {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

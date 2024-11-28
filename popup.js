@@ -1,7 +1,7 @@
 chrome.tabs.query({}, (tabs) => {
   const pergamumUrl = 'https://pergamumweb.com.br/pergamumweb_ifc';
   const pergamumHomePage = 'https://pergamumweb.com.br/pergamumweb_ifc/home_geral/index.jsp';
-  let titulo = document.getElementById('titulo');
+  let titulo = document.querySelector('.titulo');
   let botoes = document.getElementById('buttons');
 
   // Função para procurar a aba com o URL do Pergamum
@@ -24,9 +24,6 @@ chrome.tabs.query({}, (tabs) => {
     // Verifica se a aba encontrada está na página inicial do Pergamum
     if (foundTab.url !== pergamumHomePage) {
       titulo.textContent = 'Por favor, abra a página inicial do Pergamum';
-      botoes.style.display = 'none'; // Esconde os botões se não estiver na página inicial
-    } else {
-      botoes.style.display = 'flex'; // Mostra os botões se estiver na página inicial
     }
   }
 });
