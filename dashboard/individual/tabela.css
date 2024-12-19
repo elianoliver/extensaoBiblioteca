@@ -1,0 +1,155 @@
+/* =================================================================
+   VARIÁVEIS DE TABELA
+   ================================================================= */
+   :root {
+    /* Cores */
+    --table-border-color: #e5e7eb;
+    --table-header-bg: #f8fafc;
+    --table-header-color: #1a1a1a;
+    --table-cell-color: #4b5563;
+    --table-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    /* Tipografia */
+    --table-font-size: 0.8rem;
+    --table-header-weight: 600;
+    --table-header-spacing: 0.5px;
+
+    /* Espaçamento */
+    --table-cell-padding: 0.5rem;
+
+    /* Larguras padrão das colunas */
+    --table-col-sm: 80px;
+    --table-col-md: 100px;
+    --table-col-lg: 150px;
+    --table-col-xl: 180px;
+}
+
+/* =================================================================
+   CONTAINER DA TABELA
+   ================================================================= */
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    margin: 1rem 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* =================================================================
+   ESTRUTURA BÁSICA DA TABELA
+   ================================================================= */
+.table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--table-shadow);
+    border: 1px solid var(--table-border-color);
+}
+
+/* =================================================================
+   CABEÇALHO DA TABELA
+   ================================================================= */
+.table thead th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+    font-weight: var(--table-header-weight);
+    font-size: var(--table-font-size);
+    text-transform: uppercase;
+    letter-spacing: var(--table-header-spacing);
+    padding: var(--table-cell-padding);
+    border-bottom: 2px solid var(--table-border-color);
+    white-space: nowrap;
+}
+
+/* =================================================================
+   CÉLULAS DA TABELA
+   ================================================================= */
+.table tbody td {
+    padding: var(--table-cell-padding);
+    border-bottom: 1px solid var(--table-border-color);
+    color: var(--table-cell-color);
+    font-size: var(--table-font-size);
+    white-space: nowrap;
+}
+
+/* =================================================================
+   VARIANTES DE LARGURA DE COLUNA
+   ================================================================= */
+.table-col-sm { min-width: var(--table-col-sm); }
+.table-col-md { min-width: var(--table-col-md); }
+.table-col-lg { min-width: var(--table-col-lg); }
+.table-col-xl { min-width: var(--table-col-xl); }
+
+/* =================================================================
+   ESTILOS DE ORDENAÇÃO
+   ================================================================= */
+.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px !important;
+    user-select: none;
+}
+
+.sortable:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.sortable .sort-icon {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    opacity: 0.3;
+}
+
+.sortable .sort-icon::after {
+    content: '⇅';
+    position: absolute;
+    font-size: 12px;
+}
+
+.sortable.asc .sort-icon::after {
+    content: '↑';
+    opacity: 1;
+    color: var(--color-primary);
+}
+
+.sortable.desc .sort-icon::after {
+    content: '↓';
+    opacity: 1;
+    color: var(--color-primary);
+}
+
+/* =================================================================
+   HOVER E ESTADOS ATIVOS
+   ================================================================= */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* =================================================================
+   SCROLLBAR DA TABELA
+   ================================================================= */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

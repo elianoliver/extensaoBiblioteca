@@ -1,4 +1,5 @@
 import { scrapingService } from './scraping.js';
+import { TableManager } from './tableManager.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
@@ -6,18 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
     // Elementos de input e botões
     const botao = document.getElementById('btAdicionarItem');
-    const input = document.getElementById('matricula');
     const dtidInput = document.getElementById('dtid');
     const uuidInput = document.getElementById('uuid');
 
-    // Elementos de container e display
-    const tabelaContainer = document.getElementById('tabelaContainer');
-    const containerFooter = document.getElementById('containerFooter');
-    const totalMatriculas = document.getElementById('totalMatriculas');
-
     // Modificar o input para ser uma textarea
+    const input = document.getElementById('matricula');
     input.outerHTML = `<textarea id="matricula" placeholder="Digite as matrículas (uma por linha)" rows="5" class="${input.className}"></textarea>`;
     const matriculaTextarea = document.getElementById('matricula');
+
+    // Inicializar o gerenciador de tabela
+    const tableManager = new TableManager('tabelaContainer', 'containerFooter', 'totalMatriculas');
 
     //=================================================================
     // 2. CONFIGURAÇÃO DO LOCALSTORAGE
@@ -44,11 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
     // 3. CONFIGURAÇÃO DOS EVENT LISTENERS
     //=================================================================
-    // Listeners principais
     botao?.addEventListener('click', processarMultiplasMatriculas);
-    tabelaContainer.addEventListener('click', handleRemoveClick);
 
-    // Listener para teclas especiais no textarea de matrícula
     matriculaTextarea.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && e.ctrlKey) {
             e.preventDefault();
@@ -56,9 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Listeners para salvar configurações
     dtidInput.addEventListener('change', salvarConfig);
     uuidInput.addEventListener('change', salvarConfig);
+
+    // Configurar callback de remoção
+    tableManager.setRemoveCallback(removeMatricula);
 
     //=================================================================
     // 4. FUNÇÕES DE GERENCIAMENTO DE CONFIGURAÇÃO
@@ -93,15 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //=================================================================
-    // 6. HANDLERS DE EVENTOS
+    // 6. FUNÇÕES DE REMOÇÃO
     //=================================================================
-    function handleRemoveClick(e) {
-        if (e.target.classList.contains('botaoRemover')) {
-            const matricula = e.target.dataset.matricula;
-            removeMatricula(matricula);
-        }
-    }
-
     function removeMatricula(matricula) {
         // Remove da lista de matrículas
         let matriculas = JSON.parse(localStorage.getItem('matriculas')) || [];
@@ -115,13 +106,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Atualiza a interface
         atualizarTabela();
-        atualizarVisibilidade(matriculas);
+        tableManager.atualizarVisibilidade(matriculas.length > 0);
     }
 
     //=================================================================
     // 7. FUNÇÕES PRINCIPAIS DE PROCESSAMENTO DE MATRÍCULAS
     //=================================================================
-    // Nova função para processar múltiplas matrículas
     async function processarMultiplasMatriculas() {
         const texto = matriculaTextarea.value.trim();
         if (!texto) return;
@@ -167,13 +157,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // Atualiza a interface após cada consulta
-                atualizarTabelaComInfo(matriculasSalvas, info);
+                tableManager.atualizarTabelaComInfo(matriculasSalvas, info);
             }
 
             // Limpa o textarea e atualiza a visibilidade
             matriculaTextarea.value = '';
             const matriculasSalvas = JSON.parse(localStorage.getItem('matriculas')) || [];
-            atualizarVisibilidade(matriculasSalvas);
+            tableManager.atualizarVisibilidade(matriculasSalvas.length > 0);
             matriculaTextarea.focus();
         } catch (error) {
             console.error('Erro:', error);
@@ -184,70 +174,9 @@ document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
     // 8. FUNÇÕES DE ATUALIZAÇÃO DA INTERFACE
     //=================================================================
-    function atualizarTabelaComInfo(matriculas, infoAtual) {
-        if (matriculas.length === 0) {
-            tabelaContainer.innerHTML = '';
-            return;
-        }
-
-        // Construção do cabeçalho da tabela
-        let html = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Matrícula</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>CPF</th>
-                        <th>Curso</th>
-                        <th>Situação</th>
-                        <th>Tipo Usuário</th>
-                        <th>Validade</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        // Construção das linhas da tabela
-        matriculas.forEach((matricula) => {
-            const dadosMatricula = recuperarDadosMatricula(matricula) || {};
-            const info = matricula === infoAtual.matricula ? infoAtual : dadosMatricula;
-
-            html += `
-                <tr>
-                    <td>${matricula}</td>
-                    <td>${info.nome || '-'}</td>
-                    <td>${info.email || '-'}</td>
-                    <td>${info.telefone || '-'}</td>
-                    <td>${info.cpf || '-'}</td>
-                    <td>${info.curso || '-'}</td>
-                    <td>${info.situacao || '-'}</td>
-                    <td>${info.tipo_usuario || '-'}</td>
-                    <td>${info.validade_biblioteca || '-'}</td>
-                    <td>
-                        <button class="botaoRemover" data-matricula="${matricula}">×</button>
-                    </td>
-                </tr>
-            `;
-        });
-
-        html += '</tbody></table>';
-        tabelaContainer.innerHTML = html;
-        totalMatriculas.textContent = `Total: ${matriculas.length}`;
-    }
-
     function atualizarTabela() {
         const matriculas = JSON.parse(localStorage.getItem('matriculas')) || [];
-        atualizarTabelaComInfo(matriculas, {});
-        atualizarVisibilidade(matriculas);
-    }
-
-    function atualizarVisibilidade(matriculas) {
-        const temMatriculas = matriculas.length > 0;
-        containerFooter.style.visibility = temMatriculas ? 'visible' : 'hidden';
-        tabelaContainer.style.display = temMatriculas ? 'block' : 'none';
+        tableManager.atualizarTabelaComInfo(matriculas, {});
     }
 
     //=================================================================

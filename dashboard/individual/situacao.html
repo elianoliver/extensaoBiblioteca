@@ -1,36 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="situacao.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situação do Aluno</title>
+    <link rel="stylesheet" href="../../base.css">
+    <link rel="stylesheet" href="tabela.css">
 </head>
-
 <body>
-    <h3 id="titulo">SITUAÇÃO DO ALUNO</h3>
+    <!-- Título -->
+    <h3 class="title">SITUAÇÃO DO ALUNO</h3>
 
-        <div class="input-container">
-            <input type="number" id="matricula" placeholder="Cole a matrícula aqui..." class="no-spinners">
-            <button id="btAdicionarItem">+</button>
+    <!-- Container de Input Principal -->
+    <div class="input-container">
+        <input type="number" id="matricula" class="input no-spinners" placeholder="Cole a matrícula aqui...">
+        <button id="btAdicionarItem" class="btn btn-square">+</button>
+    </div>
+
+    <!-- Container da Tabela -->
+    <div id="tabelaContainer" class="table-container"></div>
+
+    <!-- Container de Parâmetros -->
+    <div class="parametros-container">
+        <input type="text" id="dtid" class="input" placeholder="dtid ex: z__h_0" value="">
+        <input type="text" id="uuid" class="input" placeholder="uuid ex: bBwR8" value="">
+    </div>
+
+    <!-- Footer -->
+    <footer id="containerFooter" class="footer">
+        <div id="totalMatriculas" class="total"></div>
+        <div class="footer-actions">
+            <button id="botaoVerificarSituacao" class="btn btn-full">Verificar Situação</button>
         </div>
+    </footer>
 
-
-        <div id="tabelaContainer"></div>
-
-        <div class="parametros-container">
-            <input type="text" id="dtid" placeholder="dtid ex: z__h_0" value="">
-            <input type="text" id="uuid" placeholder="uuid ex: bBwR8" value="">
-        </div>
-
-        <div id="containerFooter">
-            <div id="totalMatriculas"></div>
-            <button id="botaoVerificarSituacao">Verificar Situação</button>
-        </div>
-
-
-
-
-        <script type="module" src="situacao.js"></script>
+    <script type="module" src="situacao.js"></script>
 </body>
-
 </html>
