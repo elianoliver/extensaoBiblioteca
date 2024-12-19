@@ -132,6 +132,31 @@
     background-color: rgba(0, 0, 0, 0.02);
 }
 
+.botaoRemover {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 15.2px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.botaoRemover:hover {
+    background-color: #f73333;
+    transform: scale(1.05);
+}
+
+.botaoRemover:active {
+    transform: scale(0.95);
+}
+
+td .btn-square{
+    height: fit-content;
+}
+
 /* =================================================================
    SCROLLBAR DA TABELA
    ================================================================= */

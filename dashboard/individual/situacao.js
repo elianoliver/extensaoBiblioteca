@@ -1,5 +1,5 @@
-import { scrapingService } from './scraping.js';
-import { TableManager } from './tableManager.js';
+import { scrapingService } from '../modules/scraping.js';
+import { TableManager } from '../modules/tableManager.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
