@@ -1,40 +1,118 @@
-chrome.tabs.query({}, (tabs) => {
+document.addEventListener('DOMContentLoaded', () => {
     const pergamumUrl = 'https://pergamumweb.com.br/pergamumweb_ifc';
     const pergamumHomePage = 'https://pergamumweb.com.br/pergamumweb_ifc/home_geral/index.jsp';
-    let titulo = document.getElementById('titulo');
-    let botoesContainer = document.querySelector('.button-grid'); // Usando a classe que criamos
 
-    // 1º Função para procurar a aba com o URL do Pergamum
-    let foundTab = searchTab(tabs);
+    const dtidInput = document.getElementById('dtid');
+    const btnVerificar = document.getElementById('btnVerificar');
 
-    // Função para procurar
-    function searchTab(tabs) {
-        for (let tab of tabs) {
-            if (tab.url && tab.url.includes(pergamumUrl)) {
-                return tab;
-            }
-        }
-        return false;
+    //=================================================================
+    // 1. INICIALIZAÇÃO E VERIFICAÇÃO DO LOCALSTORAGE
+    //=================================================================
+    if (!localStorage.getItem('config')) {
+        localStorage.setItem('config', JSON.stringify({
+            dtid: '',
+            uuid: ''
+        }));
     }
 
-    // 2º Verifica se a aba foi encontrada
-    if (!foundTab) {
-        chrome.tabs.create({ url: pergamumUrl });
-        titulo.textContent = 'Abrindo Pergamum...';
-        if (botoesContainer) {
-            botoesContainer.style.visibility = 'hidden';
-        }
-    } else {
-        // Verifica se a aba encontrada está na página inicial do Pergamum
-        if (foundTab.url !== pergamumHomePage) {
-            titulo.textContent = 'Por favor, abra a página inicial do Pergamum';
-            if (botoesContainer) {
-                botoesContainer.style.display = 'none';
-            }
-        } else {
-            if (botoesContainer) {
-                botoesContainer.style.display = 'grid'; // Mantém o grid layout que definimos
-            }
-        }
+    // Carrega configuração salva
+    const config = JSON.parse(localStorage.getItem('config'));
+    dtidInput.value = config.dtid || '';
+
+    //=================================================================
+    // 2. FUNÇÕES DE GERENCIAMENTO DE CONFIGURAÇÃO
+    //=================================================================
+    function salvarConfig(uuid = null) {
+        const config = {
+            dtid: dtidInput.value.trim(),
+            uuid: uuid || config.uuid || ''
+        };
+        localStorage.setItem('config', JSON.stringify(config));
     }
+
+    //=================================================================
+    // 3. CONFIGURAÇÃO DOS EVENT LISTENERS
+    //=================================================================
+    // Salvar DTID quando alterado
+    dtidInput.addEventListener('change', () => salvarConfig());
+
+    // Event listener para o botão verificar
+    btnVerificar.addEventListener('click', () => {
+        const dtid = dtidInput.value.trim();
+
+        if (!dtid) {
+            alert('Por favor, preencha o campo DTID.');
+            return;
+        }
+
+        // Busca o UUID na página do Pergamum
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.scripting.executeScript({
+                target: { tabId: tabs[0].id },
+                function: capturarUUID
+            }, (results) => {
+                if (chrome.runtime.lastError) {
+                    console.error(chrome.runtime.lastError);
+                    return;
+                }
+
+                const uuid = results[0].result;
+                if (!uuid) {
+                    alert('Não foi possível capturar o UUID. Certifique-se de que está na página inicial do Pergamum.');
+                    return;
+                }
+
+                // Salva configuração com novo UUID e navega
+                salvarConfig(uuid);
+                window.location.href = 'individual/situacao.html';
+            });
+        });
+    });
+
+    //=================================================================
+    // 4. VERIFICAÇÃO DO ESTADO DO PERGAMUM
+    //=================================================================
+    chrome.tabs.query({}, (tabs) => {
+        let foundTab = searchTab(tabs);
+
+        if (!foundTab) {
+            chrome.tabs.create({ url: pergamumUrl });
+            dtidInput.disabled = true;
+            btnVerificar.disabled = true;
+        } else if (foundTab.url !== pergamumHomePage) {
+            dtidInput.disabled = true;
+            btnVerificar.disabled = true;
+            alert('Por favor, abra a página inicial do Pergamum');
+        }
+    });
 });
+
+//=================================================================
+// 5. FUNÇÕES AUXILIARES
+//=================================================================
+// Função para procurar a aba do Pergamum
+function searchTab(tabs) {
+    const pergamumUrl = 'https://pergamumweb.com.br/pergamumweb_ifc';
+    return tabs.find(tab => tab.url && tab.url.includes(pergamumUrl)) || false;
+}
+
+// Função que será executada na página do Pergamum para capturar o UUID
+function capturarUUID() {
+    try {
+        const iframe = document.getElementById('id_meio');
+        if (!iframe) return null;
+
+        const uuidInput = iframe.contentDocument.evaluate(
+            "/html/body/div[1]/div/div/div[1]/table/tbody/tr/td/table/tbody/tr/td[3]/input",
+            iframe.contentDocument,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+        ).singleNodeValue;
+
+        return uuidInput ? uuidInput.id : null;
+    } catch (error) {
+        console.error('Erro ao capturar UUID:', error);
+        return null;
+    }
+}
