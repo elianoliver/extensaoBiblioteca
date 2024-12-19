@@ -178,3 +178,29 @@ td .btn-square{
 .table-container::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+
+/* Estilos para seleção de células */
+.table td {
+    user-select: none; /* Previne seleção de texto não intencional */
+}
+
+.table .selected-cell {
+    background-color: rgba(59, 130, 246, 0.1);
+    position: relative;
+}
+
+.table .selected-cell::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid var(--color-primary);
+    pointer-events: none;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

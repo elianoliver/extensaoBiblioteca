@@ -4,8 +4,15 @@ export class TableManager {
         this.container = document.getElementById(containerId);
         this.footer = document.getElementById(footerId);
         this.totalElement = document.getElementById(totalId);
+
+        // Estado de ordenação
         this.currentSort = { column: null, direction: 'asc' };
         this.lastData = { matriculas: [], infoAtual: {} };
+
+        // Estado de seleção
+        this.selectedCells = new Set();
+        this.isSelecting = false;
+        this.startCell = null;
 
         // Verificar se os elementos foram encontrados
         if (!this.container) {
@@ -19,39 +26,186 @@ export class TableManager {
         }
 
         this.onRemoveCallback = null;
-
-        // Adicionar listeners para ordenação e remoção
-        if (this.container) {
-            this.container.addEventListener('click', (e) => {
-                // Listener para botão remover
-                if (e.target.classList.contains('botaoRemover')) {
-                    const matricula = e.target.dataset.matricula;
-                    if (this.onRemoveCallback) this.onRemoveCallback(matricula);
-                }
-
-                // Listener para ordenação
-                if (e.target.classList.contains('sortable')) {
-                    const column = e.target.dataset.column;
-                    this.ordenarPor(column);
-                }
-            });
-        }
+        this._configurarEventListeners();
     }
 
+    _configurarEventListeners() {
+        if (!this.container) return;
+
+        // Eventos de click para remoção, ordenação e seleção de coluna
+        this.container.addEventListener('click', (e) => {
+            if (e.target.classList.contains('botaoRemover')) {
+                const matricula = e.target.dataset.matricula;
+                if (this.onRemoveCallback) this.onRemoveCallback(matricula);
+            }
+            else if (e.target.classList.contains('sortable')) {
+                const column = e.target.dataset.column;
+                this.ordenarPor(column);
+            }
+            else if (e.target.tagName === 'TH' && e.shiftKey) {
+                this.selecionarColuna(e.target.cellIndex);
+            }
+        });
+
+        // Eventos para seleção de células
+        this.container.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'TD') {
+                this.iniciarSelecao(e.target);
+            }
+        });
+
+        this.container.addEventListener('mouseover', (e) => {
+            if (this.isSelecting && e.target.tagName === 'TD') {
+                this.atualizarSelecao(e.target);
+            }
+        });
+
+        this.container.addEventListener('mouseup', () => {
+            this.finalizarSelecao();
+        });
+
+        // Evento para copiar seleção
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                this.copiarSelecao();
+            }
+        });
+    }
+
+    // Métodos de seleção
+    iniciarSelecao(cell) {
+        this.isSelecting = true;
+        this.startCell = cell;
+        this.selectedCells.clear();
+        this.selectedCells.add(cell);
+        this.atualizarEstilosSelecao();
+    }
+
+    atualizarSelecao(currentCell) {
+        if (!this.startCell || !currentCell) return;
+
+        this.selectedCells.clear();
+
+        const table = currentCell.closest('table');
+        const rows = table.rows;
+
+        const startRow = this.startCell.parentElement.rowIndex;
+        const startCol = this.startCell.cellIndex;
+        const currentRow = currentCell.parentElement.rowIndex;
+        const currentCol = currentCell.cellIndex;
+
+        const minRow = Math.min(startRow, currentRow);
+        const maxRow = Math.max(startRow, currentRow);
+        const minCol = Math.min(startCol, currentCol);
+        const maxCol = Math.max(startCol, currentCol);
+
+        for (let i = minRow; i <= maxRow; i++) {
+            for (let j = minCol; j <= maxCol; j++) {
+                this.selectedCells.add(rows[i].cells[j]);
+            }
+        }
+
+        this.atualizarEstilosSelecao();
+    }
+
+    selecionarColuna(columnIndex) {
+        const table = this.container.querySelector('table');
+        if (!table) return;
+
+        this.selectedCells.clear();
+
+        // Seleciona todas as células da coluna (exceto cabeçalho)
+        for (let i = 1; i < table.rows.length; i++) {
+            const cell = table.rows[i].cells[columnIndex];
+            if (cell) this.selectedCells.add(cell);
+        }
+
+        this.atualizarEstilosSelecao();
+    }
+
+    finalizarSelecao() {
+        this.isSelecting = false;
+    }
+
+    atualizarEstilosSelecao() {
+        const allCells = this.container.querySelectorAll('td');
+        allCells.forEach(cell => cell.classList.remove('selected-cell'));
+        this.selectedCells.forEach(cell => cell.classList.add('selected-cell'));
+    }
+
+    copiarSelecao() {
+        if (this.selectedCells.size === 0) return;
+
+        const table = this.container.querySelector('table');
+        if (!table) return;
+
+        // Organiza as células selecionadas
+        const cellsByPosition = Array.from(this.selectedCells)
+            .map(cell => ({
+                row: cell.parentElement.rowIndex,
+                col: cell.cellIndex,
+                text: cell.textContent.trim()
+            }))
+            .sort((a, b) => a.row - b.row || a.col - b.col);
+
+        // Agrupa por linhas
+        const rows = [];
+        let currentRow = -1;
+        let currentRowCells = [];
+
+        cellsByPosition.forEach(cell => {
+            if (cell.row !== currentRow) {
+                if (currentRowCells.length > 0) {
+                    rows.push(currentRowCells);
+                }
+                currentRowCells = [cell.text];
+                currentRow = cell.row;
+            } else {
+                currentRowCells.push(cell.text);
+            }
+        });
+        if (currentRowCells.length > 0) {
+            rows.push(currentRowCells);
+        }
+
+        // Cria o texto para copiar
+        const copyText = rows.map(row => row.join('\t')).join('\n');
+
+        // Copia para a área de transferência
+        navigator.clipboard.writeText(copyText).then(() => {
+            this.mostrarFeedbackCopia();
+        });
+    }
+
+    mostrarFeedbackCopia() {
+        const feedback = document.createElement('div');
+        feedback.textContent = 'Copiado!';
+        feedback.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--color-primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            animation: fadeOut 1.5s forwards;
+        `;
+        document.body.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 1500);
+    }
+
+    // Seus métodos existentes continuam aqui...
     setRemoveCallback(callback) {
         this.onRemoveCallback = callback;
     }
 
     ordenarPor(column) {
-        // Atualiza direção da ordenação
         if (this.currentSort.column === column) {
             this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
         } else {
             this.currentSort.column = column;
             this.currentSort.direction = 'asc';
         }
-
-        // Reordena e atualiza a tabela
         this.atualizarTabelaComInfo(this.lastData.matriculas, this.lastData.infoAtual);
     }
 
@@ -74,22 +228,18 @@ export class TableManager {
                     valorB = infoB[this.currentSort.column] || '';
             }
 
-            // Normaliza os valores para comparação
             valorA = valorA.toString().toLowerCase();
             valorB = valorB.toString().toLowerCase();
 
-            if (this.currentSort.direction === 'asc') {
-                return valorA.localeCompare(valorB);
-            } else {
-                return valorB.localeCompare(valorA);
-            }
+            return this.currentSort.direction === 'asc'
+                ? valorA.localeCompare(valorB)
+                : valorB.localeCompare(valorA);
         });
     }
 
     atualizarTabelaComInfo(matriculas, infoAtual = {}) {
         if (!this.container) return;
 
-        // Armazena os dados mais recentes
         this.lastData = { matriculas, infoAtual };
 
         if (matriculas.length === 0) {
@@ -97,16 +247,13 @@ export class TableManager {
             return;
         }
 
-        // Ordena os dados se necessário
         const matriculasOrdenadas = this._ordenarDados(matriculas, infoAtual);
-
         let html = this._criarCabecalhoTabela();
         html += this._criarCorpoTabela(matriculasOrdenadas, infoAtual);
 
         this.container.innerHTML = html;
         this.atualizarTotal(matriculas.length);
 
-        // Adiciona indicador de ordenação atual
         if (this.currentSort.column) {
             const thAtual = this.container.querySelector(`th[data-column="${this.currentSort.column}"]`);
             if (thAtual) {
@@ -131,7 +278,6 @@ export class TableManager {
     }
 
     _criarCabecalhoTabela() {
-        // Adiciona classe 'sortable' e data-column nos cabeçalhos ordenáveis
         return `
             <table class="table table-hover">
                 <thead>
