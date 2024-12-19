@@ -55,7 +55,7 @@ body {
 
 
 /* Estilização dos inputs */
-input {
+input, textarea {
     flex: 1;
     padding: 0.875rem 1rem;
     border: 2px solid #e5e7eb;
@@ -64,6 +64,7 @@ input {
     height: 48px;
     transition: all 0.2s ease;
     background: #f9fafb;
+    overflow: hidden;
 }
 
 input:focus {
