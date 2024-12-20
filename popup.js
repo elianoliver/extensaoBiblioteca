@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pergamumHomePage = 'https://pergamumweb.com.br/pergamumweb_ifc/home_geral/index.jsp';
 
     const dtidInput = document.getElementById('dtid');
+    const uuidInput = document.getElementById('uuid');
     const btnVerificar = document.getElementById('btnVerificar');
 
     //=================================================================
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrega configuração salva
     const config = JSON.parse(localStorage.getItem('config'));
     dtidInput.value = config.dtid || '';
+    uuidInput.value = config.uuid || '';
 
     //=================================================================
     // 2. FUNÇÕES DE GERENCIAMENTO DE CONFIGURAÇÃO
@@ -45,10 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Busca o UUID na página do Pergamum
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        // Busca todas as abas abertas
+        chrome.tabs.query({}, (tabs) => {
+            const pergamumTab = tabs.find(tab => tab.url.includes('pergamumweb.com.br'));
+
+            if (!pergamumTab) {
+                alert('Nenhuma aba com o Pergamum encontrada.');
+                return;
+            }
+
             chrome.scripting.executeScript({
-                target: { tabId: tabs[0].id },
+                target: { tabId: pergamumTab.id },
                 function: capturarUUID
             }, (results) => {
                 if (chrome.runtime.lastError) {

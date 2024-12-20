@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alteração em Massa - Sistema Acadêmico</title>
+    <link rel="stylesheet" href="../../base.css">
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" href="../individual/tabela.css">
+
+    <style>
+        .header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            color: var(--color-primary-dark);
+            transform: translateX(-2px);
+        }
+
+        .title {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <!-- Header com botão voltar e título -->
+        <div class="header">
+            <button class="back-button">
+                <a href="../individual/situacao.html" class="no-decoration-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                </a>
+            </button>
+            <h3 class="title">RE-CADASTRO</h3>
+        </div>
+
+        <section class="form-group input-container">
+            <div class="field-row">
+                <label class="field-label" for="curso">Curso:</label>
+                <div class="field-input">
+                    <select id="curso" name="curso">
+                        <option value="">Selecione um curso</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <label class="field-label" for="situacao">Situação:</label>
+                <div class="field-input">
+                    <select id="situacao" name="situacao">
+                        <option value="">Selecione uma situação</option>
+                        <option value="1">Afastado</option>
+                        <option value="2">Normal</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <label class="field-label" for="tipoUsuario">Tipo de Usuário:</label>
+                <div class="field-input">
+                    <select id="tipoUsuario" name="tipoUsuario">
+                        <option value="0" selected>Selecione um tipo</option>
+                        <option value="1">1 - Aluno - curso técnico</option>
+                        <option value="2">2 - Aluno - curso graduação/tecnologia</option>
+                        <option value="3">3 - Aluno - pós-graduação</option>
+                        <option value="4">4 - Servidor Docente</option>
+                        <option value="5">5 - Servidor Técnico Administrativo em Educação</option>
+                        <option value="6">6 - Inter Biblioteca</option>
+                        <option value="7">7 - Aluno - Pronatec/ Proeja/ FIC</option>
+                        <option value="8">8 - Visitante</option>
+                        <option value="9">9 - Conveniados</option>
+                        <option value="10">10 - Aluno - EAD</option>
+                        <option value="11">11 - Aluno - Mestrado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <label class="field-label" for="validadeBiblioteca">Validade Biblioteca:</label>
+                <div class="field-input">
+                    <input type="date" id="validadeBiblioteca" name="validadeBiblioteca">
+                </div>
+            </div>
+        </section>
+
+        <div id="tabelaContainer" class="table-container"></div>
+
+        <!-- <section class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-column">
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <th>Matrícula</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>CPF</th>
+                        <th>Curso</th>
+                        <th>Situação</th>
+                        <th>Tipo Usuário</th>
+                        <th>Val. Biblioteca</th>
+                    </tr>
+                </thead>
+                <tbody id="alunosTable">
+
+                </tbody>
+            </table>
+        </section> -->
+
+
+    </main>
+
+    <footer class="footer acoes-container">
+        <div class="total-counter">
+            Alunos selecionados: <span id="selectedCount">0</span>
+        </div>
+        <div class="total-counter">
+            Total de alunos: <span id="totalCount">0</span>
+        </div>
+        <div class="buttons-container">
+            <button type="button" class="btn btn-primary" id="btnAlterar">Alterar</button>
+            <button type="button" class="btn btn-secondary" id="btnVoltar">Voltar</button>
+        </div>
+    </footer>
+
+    <script src="cadastro.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+/* Form Section */
+.input-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+    align-items: stretch;
+}
+
+.field-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.field-row:last-child {
+    margin-bottom: 0;
+}
+
+.field-label {
+    width: 150px;
+    color: #4a5568;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding-top: 0.5rem;
+}
+
+.field-input {
+    flex: 1;
+}
+
+/* Input Styles */
+.field-input input,
+.field-input select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.field-input input:focus,
+.field-input select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+/* Date Input Specific */
+.field-input input[type="date"] {
+    padding: 0.4rem 0.75rem;
+}
+
+/* Select Styles */
+.field-input select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.25em;
+    padding-right: 2rem;
+}
+
+/* Table Styles */
+.table-container {
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.table th {
+    background: #f7fafc;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a5568;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #2d3748;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Checkbox Styles */
+.checkbox-column {
+    width: 40px;
+    text-align: center;
+}
+
+.checkbox-column input[type="checkbox"], #selectAll{
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbd5e0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Row States */
+.row-alterado {
+    background-color: #fffbeb !important;
+}
+
+.row-alterado:hover {
+    background-color: #fef3c7 !important;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Button Styles */
+button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button.btn-primary {
+    background-color: #4299e1;
+    color: white;
+    border: 1px solid #3182ce;
+}
+
+button.btn-primary:hover {
+    background-color: #3182ce;
+}
+
+button.btn-secondary {
+    background-color: #fff;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+button.btn-secondary:hover {
+    background-color: #f7fafc;
+}
+
+/* Responsive Adjustments - Modified */
+@media (max-width: 768px) {
+    .field-label {
+        min-width: 150px;  /* Maintain label width */
+    }
+}

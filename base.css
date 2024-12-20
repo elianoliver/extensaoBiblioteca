@@ -13,7 +13,7 @@
     --color-background-tertiary: #f8fafc;
 
     /* Dimensões */
-    --min-width: 360px;
+    --min-width: 500px;
     --max-width: 500px;
     --input-height: 48px;
     --button-square-size: 48px;
@@ -52,6 +52,13 @@ body {
     margin: 0;
     height: auto;
     position: relative;
+}
+
+.no-decoration-link {
+    text-decoration: none;
+    color: inherit; /* Mantém a cor do texto do link igual ao texto ao redor */
+    border: none; /* Remove qualquer borda */
+    outline: none; /* Remove qualquer contorno */
 }
 
 /* =================================================================
@@ -147,11 +154,14 @@ body {
 /* =================================================================
    7. TABELAS
    ================================================================= */
-.table-container {
+   .table-container {
     overflow-x: auto;
     max-width: 100%;
     margin: var(--spacing-base) 0;
     -webkit-overflow-scrolling: touch;
+    background: var(--color-background);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
 }
 
 .table {
@@ -159,43 +169,80 @@ body {
     min-width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
     border: 1px solid var(--color-border);
 }
 
+/* Cabeçalho da tabela */
 .table th {
     background-color: var(--color-background-tertiary);
     color: var(--color-text-primary);
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: var(--spacing-xs);
+    padding: var(--spacing-sm);
     border-bottom: 2px solid var(--color-border);
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
+/* Células da tabela */
 .table td {
-    padding: var(--spacing-xs);
+    padding: var(--spacing-sm);
     border-bottom: 1px solid var(--color-border);
     color: var(--color-text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     white-space: nowrap;
+    transition: background-color 0.2s ease;
 }
 
-/* Larguras das colunas */
+/* Linhas alternadas */
+.table tbody tr:nth-child(even) {
+    background-color: var(--color-background-secondary);
+}
+
+/* Hover na linha */
+.table tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Linha selecionada */
+.table tbody tr.selected {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Checkbox na tabela */
+.table .checkbox-column {
+    width: 48px;
+    text-align: center;
+}
+
+.table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid var(--color-border);
+}
+
+/* Última linha sem borda inferior */
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Larguras das colunas comuns */
 .table th:nth-child(1),
-.table td:nth-child(1) { min-width: 80px; }
+.table td:nth-child(1) { min-width: 60px; }  /* Checkbox */
 .table th:nth-child(2),
-.table td:nth-child(2) { min-width: 150px; }
+.table td:nth-child(2) { min-width: 100px; } /* Matrícula */
 .table th:nth-child(3),
-.table td:nth-child(3) { min-width: 180px; }
+.table td:nth-child(3) { min-width: 200px; } /* Nome */
 .table th:nth-child(4),
-.table td:nth-child(4) { min-width: 100px; }
+.table td:nth-child(4) { min-width: 180px; } /* Email */
 .table th:nth-child(5),
-.table td:nth-child(5) { min-width: 100px; }
+.table td:nth-child(5) { min-width: 120px; } /* Telefone */
 
 /* =================================================================
    8. FOOTER

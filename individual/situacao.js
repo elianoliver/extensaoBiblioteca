@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //=================================================================
     // Elementos de input e botões
     const botao = document.getElementById('btAdicionarItem');
-    const dtidInput = document.getElementById('dtid');
-    const uuidInput = document.getElementById('uuid');
 
     // Modificar o input para ser uma textarea
     const input = document.getElementById('matricula');
@@ -28,17 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!localStorage.getItem('matriculas_dados')) {
         localStorage.setItem('matriculas_dados', JSON.stringify({}));
     }
-    if (!localStorage.getItem('config')) {
-        localStorage.setItem('config', JSON.stringify({
-            dtid: '',
-            uuid: ''
-        }));
-    }
-
-    // Carrega configurações salvas
-    const config = JSON.parse(localStorage.getItem('config'));
-    dtidInput.value = config.dtid || '';
-    uuidInput.value = config.uuid || '';
 
     //=================================================================
     // 3. CONFIGURAÇÃO DOS EVENT LISTENERS
@@ -52,25 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    dtidInput.addEventListener('change', salvarConfig);
-    uuidInput.addEventListener('change', salvarConfig);
-
     // Configurar callback de remoção
     tableManager.setRemoveCallback(removeMatricula);
 
     //=================================================================
-    // 4. FUNÇÕES DE GERENCIAMENTO DE CONFIGURAÇÃO
-    //=================================================================
-    function salvarConfig() {
-        const config = {
-            dtid: dtidInput.value.trim(),
-            uuid: uuidInput.value.trim()
-        };
-        localStorage.setItem('config', JSON.stringify(config));
-    }
-
-    //=================================================================
-    // 5. FUNÇÕES DE MANIPULAÇÃO DO LOCALSTORAGE
+    // 4. FUNÇÕES DE MANIPULAÇÃO DO LOCALSTORAGE
     //=================================================================
     function salvarDadosMatricula(matricula, dados) {
         const matriculasStorage = localStorage.getItem('matriculas_dados') || '{}';
@@ -91,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //=================================================================
-    // 6. FUNÇÕES DE REMOÇÃO
+    // 5. FUNÇÕES DE REMOÇÃO
     //=================================================================
     function removeMatricula(matricula) {
         // Remove da lista de matrículas
@@ -110,18 +83,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //=================================================================
-    // 7. FUNÇÕES PRINCIPAIS DE PROCESSAMENTO DE MATRÍCULAS
+    // 6. FUNÇÕES PRINCIPAIS DE PROCESSAMENTO DE MATRÍCULAS
     //=================================================================
     async function processarMultiplasMatriculas() {
         const texto = matriculaTextarea.value.trim();
         if (!texto) return;
 
-        // Validação dos campos de configuração
-        const dtid = dtidInput.value.trim();
-        const uuid = uuidInput.value.trim();
-
-        if (!dtid || !uuid) {
-            alert('Por favor, preencha os campos dtid e uuid.');
+        // Recupera configurações do localStorage
+        const config = JSON.parse(localStorage.getItem('config'));
+        if (!config || !config.dtid || !config.uuid) {
+            alert('Configuração incompleta. Por favor, volte à página inicial.');
             return;
         }
 
@@ -145,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (dadosCache && (new Date().getTime() - dadosCache.timestamp) < umahora) {
                     info = dadosCache;
                 } else {
-                    info = await scrapingService.consultarMatricula(matricula, dtid, uuid);
+                    info = await scrapingService.consultarMatricula(matricula, config.dtid, config.uuid);
                     salvarDadosMatricula(matricula, info);
                 }
 
@@ -172,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //=================================================================
-    // 8. FUNÇÕES DE ATUALIZAÇÃO DA INTERFACE
+    // 7. FUNÇÕES DE ATUALIZAÇÃO DA INTERFACE
     //=================================================================
     function atualizarTabela() {
         const matriculas = JSON.parse(localStorage.getItem('matriculas')) || [];
@@ -180,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //=================================================================
-    // 9. INICIALIZAÇÃO
+    // 8. INICIALIZAÇÃO
     //=================================================================
     // Carrega a tabela inicial
     atualizarTabela();
