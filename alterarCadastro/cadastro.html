@@ -55,12 +55,52 @@
             <h3 class="title">RE-CADASTRO</h3>
         </div>
 
+        <!-- Container de Input de Cadastro -->
         <section class="form-group input-container">
             <div class="field-row">
                 <label class="field-label" for="curso">Curso:</label>
                 <div class="field-input">
                     <select id="curso" name="curso">
-                        <option value="">Selecione um curso</option>
+                        <option value="0" selected>Selecione um curso</option>
+
+                        <optgroup label="Ensino Médio">
+                            <option value="101">101 - Técnico em Agropecuária Integrado (A) - Camboriú</option>
+                            <option value="109">109 - Técnico em Informática Integrado ao Ensino Médio</option>
+                            <option value="113">113 - Técnico em Hospedagem Integrado (TH) - Camboriú</option>
+                            <option value="114">114 - Técnico em Controle Ambiental Integrado (CA) - Camboriú</option>
+                        </optgroup>
+
+                        <optgroup label="PROEJA">
+                            <option value="111">111 - PROEJA - Agente de Observação de Segurança do Trabalho - Camboriú</option>
+                            <option value="112">112 - PROEJA - Agente de Higiene e Segurança do Trabalho</option>
+                            <option value="117">117 - PROEJA - Agroindústria - Camboriú</option>
+                        </optgroup>
+
+                        <optgroup label="Subsequente">
+                            <option value="103">103 - Técnico em Agropecuária Subsequente - Camboriú</option>
+                            <option value="104">104 - Técnico em Transações Imobiliário (TTI) - Camboriú</option>
+                            <option value="116">116 - Técnico em Segurança do Trabalho Subsequente (TST) - Camboriú</option>
+                            <option value="129">129 - Técnico em Defesa Civil - EAD</option>
+                        </optgroup>
+
+                        <optgroup label="Tecnologia">
+                            <option value="102">102 - Tecnologia em Negócios Imobiliários (TNI) - Camboriú</option>
+                            <option value="119">119 - Tecnologia em Sistema para Internet (TSI) - Camboriú</option>
+                        </optgroup>
+
+                        <optgroup label="Bacharelado">
+                            <option value="107">107 - Bacharelado em Sistema de Informação (BSI) - Camboriú</option>
+                        </optgroup>
+
+                        <optgroup label="Licenciatura">
+                            <option value="108">108 - Licenciatura em Matemática (LM) - Camboriú</option>
+                            <option value="120">120 - Pedagogia (LP) - Camboriú</option>
+                        </optgroup>
+
+                        <optgroup label="Especialização">
+                            <option value="121">121 - Especialização em Treinador e Instrutor de Cães Guia - Camboriú
+                            </option>
+                        </optgroup>
                     </select>
                 </div>
             </div>
@@ -69,7 +109,7 @@
                 <label class="field-label" for="situacao">Situação:</label>
                 <div class="field-input">
                     <select id="situacao" name="situacao">
-                        <option value="">Selecione uma situação</option>
+                        <option value="0" selected>Selecione uma situação</option>
                         <option value="1">Afastado</option>
                         <option value="2">Normal</option>
 
@@ -107,47 +147,18 @@
 
         <div id="tabelaContainer" class="table-container"></div>
 
-        <!-- <section class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="checkbox-column">
-                            <input type="checkbox" id="selectAll">
-                        </th>
-                        <th>Matrícula</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>CPF</th>
-                        <th>Curso</th>
-                        <th>Situação</th>
-                        <th>Tipo Usuário</th>
-                        <th>Val. Biblioteca</th>
-                    </tr>
-                </thead>
-                <tbody id="alunosTable">
-
-                </tbody>
-            </table>
-        </section> -->
-
-
     </main>
 
-    <footer class="footer acoes-container">
-        <div class="total-counter">
-            Alunos selecionados: <span id="selectedCount">0</span>
-        </div>
-        <div class="total-counter">
-            Total de alunos: <span id="totalCount">0</span>
-        </div>
-        <div class="buttons-container">
+    <footer id="containerFooter" class="footer">
+        <div id="totalMatriculas" class="total"></div>
+        <div class="footer-actions">
             <button type="button" class="btn btn-primary" id="btnAlterar">Alterar</button>
             <button type="button" class="btn btn-secondary" id="btnVoltar">Voltar</button>
         </div>
     </footer>
 
     <script src="cadastro.js" type="module"></script>
+    <script src="editableTableManager.js" type="module"></script>
 </body>
 
 </html>

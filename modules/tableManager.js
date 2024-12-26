@@ -282,6 +282,7 @@ export class TableManager {
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th class="table-col-sm">Ação</th>
                         <th class="table-col-sm sortable" data-column="matricula">
                             Matrícula
                             <span class="sort-icon"></span>
@@ -318,7 +319,6 @@ export class TableManager {
                             Validade
                             <span class="sort-icon"></span>
                         </th>
-                        <th class="table-col-sm">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -333,6 +333,11 @@ export class TableManager {
 
             html += `
                 <tr>
+                    <td class="table-col-sm acoes-cell">
+                        <div class="acoes-container">
+                            <button class="btn-acao botaoRemover" title="Remover" data-matricula="${matricula}">×</button>
+                        </div>
+                    </td>
                     <td>${matricula}</td>
                     <td>${info.nome || '-'}</td>
                     <td>${info.email || '-'}</td>
@@ -342,9 +347,6 @@ export class TableManager {
                     <td>${info.situacao || '-'}</td>
                     <td>${info.tipo_usuario || '-'}</td>
                     <td>${info.validade_biblioteca || '-'}</td>
-                    <td>
-                        <button class="btn btn-square botaoRemover" data-matricula="${matricula}">×</button>
-                    </td>
                 </tr>
             `;
         });

@@ -135,8 +135,8 @@ body {
 }
 
 .btn-square {
-    width: var(--button-square-size);
-    height: var(--button-square-size);
+    /* width: var(--button-square-size);
+    height: var(--button-square-size); */
     min-width: var(--button-square-size);
     font-size: 1.5rem;
     display: flex;

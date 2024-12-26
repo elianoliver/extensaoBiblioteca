@@ -17,19 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Carrega configuração salva
-    const config = JSON.parse(localStorage.getItem('config'));
+    let config = JSON.parse(localStorage.getItem('config'));
     dtidInput.value = config.dtid || '';
     uuidInput.value = config.uuid || '';
 
     //=================================================================
     // 2. FUNÇÕES DE GERENCIAMENTO DE CONFIGURAÇÃO
     //=================================================================
-    function salvarConfig(uuid = null) {
-        const config = {
+    function salvarConfig(newUuid = null) {
+        // Always get the latest config before saving
+        config = JSON.parse(localStorage.getItem('config'));
+        const updatedConfig = {
             dtid: dtidInput.value.trim(),
-            uuid: uuid || config.uuid || ''
+            uuid: newUuid || config.uuid || ''
         };
-        localStorage.setItem('config', JSON.stringify(config));
+        localStorage.setItem('config', JSON.stringify(updatedConfig));
+        config = updatedConfig; // Update the current config reference
     }
 
     //=================================================================

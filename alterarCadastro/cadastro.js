@@ -1,24 +1,20 @@
 // cadastro.js
-import { TableManager } from '../modules/tableManager.js';
+import { EditableTableManager } from './editableTableManager.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Inicialização dos elementos do formulário
-    const emailInput = document.getElementById('email');
-    const telefoneInput = document.getElementById('telefone');
-    const cpfInput = document.getElementById('cpf');
     const cursoSelect = document.getElementById('curso');
     const situacaoSelect = document.getElementById('situacao');
     const tipoUsuarioSelect = document.getElementById('tipoUsuario');
     const validadeBibliotecaInput = document.getElementById('validadeBiblioteca');
 
-    // Inicializar o gerenciador de tabela
-    const tableManager = new TableManager('tabelaContainer', 'selectedCount', 'totalCount');
+    // Inicializar o gerenciador de tabela editável
+    const tableManager = new EditableTableManager('tabelaContainer', 'containerFooter', 'totalMatriculas');
 
     // Função para atualizar a tabela com os dados do localStorage
     function atualizarTabela() {
         const matriculas = JSON.parse(localStorage.getItem('matriculas')) || [];
         const matriculasDados = JSON.parse(localStorage.getItem('matriculas_dados')) || {};
-
         tableManager.atualizarTabelaComInfo(matriculas, matriculasDados);
     }
 
@@ -33,9 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Coletar os dados do formulário
         const dadosAtualizacao = {
-            email: emailInput.value,
-            telefone: telefoneInput.value,
-            cpf: cpfInput.value,
             curso: cursoSelect.value,
             situacao: situacaoSelect.value,
             tipoUsuario: tipoUsuarioSelect.value,
