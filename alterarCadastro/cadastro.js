@@ -1,5 +1,6 @@
 // cadastro.js
 import { EditableTableManager } from './editableTableManager.js';
+import { BulkUpdateManager } from './bulkUpdateManager.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Inicialização dos elementos do formulário
@@ -10,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar o gerenciador de tabela editável
     const tableManager = new EditableTableManager('tabelaContainer', 'containerFooter', 'totalMatriculas');
+
+    // Inicializar o gerenciador de atualização em massa
+    const bulkUpdateManager = new BulkUpdateManager();
 
     // Função para atualizar a tabela com os dados do localStorage
     function atualizarTabela() {

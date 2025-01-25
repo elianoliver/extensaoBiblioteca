@@ -1,7 +1,7 @@
 /* =================================================================
    1. VARIÁVEIS CSS
    ================================================================= */
-   :root {
+:root {
     /* Cores */
     --color-primary: #3b82f6;
     --color-primary-dark: #2563eb;
@@ -13,23 +13,23 @@
     --color-background-tertiary: #f8fafc;
 
     /* Dimensões */
-    --min-width: 500px;
-    --max-width: 500px;
-    --input-height: 48px;
-    --button-square-size: 48px;
+    --min-width: 300px;
+    --max-width: 100%;
+    --input-height: 40px;
+    --button-square-size: 40px;
 
     /* Sombras */
-    --shadow-sm: 0 2px 5px rgba(59, 130, 246, 0.2);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --shadow-focus: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-focus: 0 0 0 2px rgba(59, 130, 246, 0.1);
 
     /* Espaçamento */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-base: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-base: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
 }
 
 /* =================================================================
@@ -45,20 +45,22 @@ body {
     min-width: var(--min-width);
     max-width: var(--max-width);
     font-family: 'Arial', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    padding: var(--spacing-lg) var(--spacing-lg) 0;
+    padding: var(--spacing-sm);
     background-color: var(--color-background);
-    border-radius: 16px;
-    box-shadow: var(--shadow-lg);
     margin: 0;
     height: auto;
     position: relative;
+    font-size: 14px;
 }
 
 .no-decoration-link {
     text-decoration: none;
-    color: inherit; /* Mantém a cor do texto do link igual ao texto ao redor */
-    border: none; /* Remove qualquer borda */
-    outline: none; /* Remove qualquer contorno */
+    color: inherit;
+    /* Mantém a cor do texto do link igual ao texto ao redor */
+    border: none;
+    /* Remove qualquer borda */
+    outline: none;
+    /* Remove qualquer contorno */
 }
 
 /* =================================================================
@@ -125,18 +127,17 @@ body {
     border-radius: 10px;
     transition: all 0.2s ease;
     font-weight: 600;
-    box-shadow: var(--shadow-sm);
 }
 
 .btn:hover {
     background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
+    transform: scale(1.03);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-square {
-    /* width: var(--button-square-size);
-    height: var(--button-square-size); */
+    width: var(--button-square-size);
+    height: var(--button-square-size);
     min-width: var(--button-square-size);
     font-size: 1.5rem;
     display: flex;
@@ -154,7 +155,7 @@ body {
 /* =================================================================
    7. TABELAS
    ================================================================= */
-   .table-container {
+.table-container {
     overflow-x: auto;
     max-width: 100%;
     margin: var(--spacing-base) 0;
@@ -234,15 +235,35 @@ body {
 
 /* Larguras das colunas comuns */
 .table th:nth-child(1),
-.table td:nth-child(1) { min-width: 60px; }  /* Checkbox */
+.table td:nth-child(1) {
+    min-width: 60px;
+}
+
+/* Checkbox */
 .table th:nth-child(2),
-.table td:nth-child(2) { min-width: 100px; } /* Matrícula */
+.table td:nth-child(2) {
+    min-width: 100px;
+}
+
+/* Matrícula */
 .table th:nth-child(3),
-.table td:nth-child(3) { min-width: 200px; } /* Nome */
+.table td:nth-child(3) {
+    min-width: 200px;
+}
+
+/* Nome */
 .table th:nth-child(4),
-.table td:nth-child(4) { min-width: 180px; } /* Email */
+.table td:nth-child(4) {
+    min-width: 180px;
+}
+
+/* Email */
 .table th:nth-child(5),
-.table td:nth-child(5) { min-width: 120px; } /* Telefone */
+.table td:nth-child(5) {
+    min-width: 120px;
+}
+
+/* Telefone */
 
 /* =================================================================
    8. FOOTER
@@ -269,17 +290,18 @@ body {
    9. SCROLLBAR
    ================================================================= */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    /* Reduz a largura do scrollbar */
+    height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+    /* Torna o scrollbar mais discreto */
 }
 
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c5c5c5;
     border-radius: 4px;
 }
 

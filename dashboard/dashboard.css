@@ -1,0 +1,98 @@
+/* dashboard.css */
+
+body{
+    padding: var(--spacing-sm);
+}
+
+/* Estilos específicos dos ícones */
+.btn svg {
+    flex-shrink: 0;
+}
+
+/* Estilos do título com ícone */
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) 0;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.title-icon {
+    color: var(--color-primary);
+    transition: transform 0.2s ease;
+}
+
+.title:hover .title-icon {
+    transform: scale(1.1);
+}
+
+.title-text {
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 1.2rem; /* Reduz o tamanho da fonte do título */
+    color: var(--color-text-primary);
+}
+
+/* Opcional: adicionar uma linha decorativa sob o título */
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: 2px;
+}
+
+/* Estilos dos containers de ação */
+.action-container {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-base);
+}
+
+/* Ajuste para links dentro do container */
+.action-container a {
+    flex: 1;
+    text-decoration: none;
+    display: block;
+}
+
+/* Estilos para os botões de ação */
+.action-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+/* Estilos para os botões de planilha */
+.sheet-button {
+    background-color: #0F9D58;
+}
+
+/* Estilos para o texto descritivo */
+.dashboard-description {
+    font-size: 0.9rem; /* Reduz o tamanho da fonte da descrição */
+    line-height: 1.5; /* Melhora o espaçamento entre linhas */
+    color: var(--color-text-secondary);
+    text-align: justify;
+    margin-bottom: var(--spacing-lg); /* Reduz o espaçamento abaixo da descrição */
+    padding: 0 var(--spacing-xs); /* Adiciona um pequeno padding lateral */
+}
+
+/* Ajustes específicos para botões dentro de links */
+a .btn {
+    width: 100%;
+    margin: 0;
+}
+
+.btn-square {
+    width: 48px;
+    height: 48px;
+}

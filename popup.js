@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Salva configuração com novo UUID e navega
                 salvarConfig(uuid);
-                window.location.href = 'individual/situacao.html';
+                window.location.href = 'dashboard/dashboard.html';
             });
         });
     });
@@ -128,3 +128,5 @@ function capturarUUID() {
         return null;
     }
 }
+
+chrome.sidePanel.setOptions({ enabled: true });
