@@ -128,5 +128,3 @@ function capturarUUID() {
         return null;
     }
 }
-
-chrome.sidePanel.setOptions({ enabled: true });

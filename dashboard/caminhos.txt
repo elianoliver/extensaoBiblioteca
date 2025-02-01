@@ -2,3 +2,37 @@ emprestimo = https://pergamumweb.com.br/pergamumweb_ifc/circulacao/emprestimo.js
 devolucao = https://pergamumweb.com.br/pergamumweb_ifc/circulacao/devolucao.jsp
 pagamento = https://pergamumweb.com.br/pergamumweb_ifc/circulacao/atualizacao_debitos.jsp
 cadastro = https://pergamumweb.com.br/pergamumweb_ifc/usuario/cadastro_pessoa.zul
+
+ABA DE CADASTRO
+--- primeira linha da planilha de exemplo
+CONCLUÍDO	MATRICULA	ALUNO	CPF	TELEFONE	EMAIL	CURSO	ANOS	CÓDIGO
+❌	2025312173	 ALANA DA ROCHA DOS SANTOS 	12982487950	|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||	#N/A	TÉCNICO EM HOSPEDAGEM INTEGRADO AO ENSINO MÉDIO	3	113
+
+
+--- parte 0 - inserir cadastro
+- inputMatricula = /html/body/div[1]/div/div/div[1]/table/tbody/tr/td/table/tbody/tr/td[3]/input
+- alerta usuario nao cadastrado (pode aparecer ou não) = /html/body/div[4]/div[2]/div[2]/div/button
+- inputNomeUsuario = /html/body/div[1]/div/div/div[1]/table/tbody/tr/td/table/tbody/tr/td[7]/input
+- btInserir = /html/body/div[1]/div/div/div[1]/div/div[1]/button[1]
+
+--- parte 1 - informações basicas
+
+- telefone = /html/body/div[1]/div/div/div[4]/div[2]/div[1]/div[1]/div[3]/table/tbody[1]/tr[3]/td[2]/div/input
+- cpf = /html/body/div[1]/div/div/div[4]/div[2]/div[1]/div[1]/div[3]/table/tbody[1]/tr[5]/td[2]/div/input
+- email = /html/body/div[1]/div/div/div[4]/div[2]/div[1]/div[1]/div[3]/table/tbody[1]/tr[10]/td/input
+- btAlterar = /html/body/div[1]/div/div/div[1]/div/div[1]/button[2]
+
+--- parte 2 - validade
+
+- btValidade = /html/body/div[1]/div/div/div[4]/div[1]/ul/li[3]/a/span
+- inputValidade = /html/body/div[1]/div/div/div[4]/div[2]/div[3]/div[1]/div[3]/table/tbody[1]/tr/td[2]/div/table/tbody/tr/td/table/tbody/tr/td[1]/span/input
+- btGravar = /html/body/div[1]/div/div/div[1]/div/div[1]/button[1]
+
+--- parte 3 - unidade organizacional
+
+- btUnidade = /html/body/div[1]/div/div/div[4]/div[1]/ul/li[5]/a/span
+- inputUnidadeCodigo = /html/body/div[1]/div/div/div[4]/div[2]/div[5]/div[1]/div[3]/table/tbody[1]/tr[1]/td[2]/div/table/tbody/tr/td/table/tbody/tr/td[1]/input
+- btGravar = /html/body/div[1]/div/div/div[1]/div/div[1]/button[1]
+
+
+
