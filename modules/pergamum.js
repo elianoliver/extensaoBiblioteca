@@ -38,18 +38,21 @@ class PergamumCadastro {
         const data = await response.json();
         if (!data.values) throw new Error('Nenhum dado retornado.');
 
-        return data.values.slice(1).map(row => ({
-            matricula: row[1]?.trim() || "",
-            nome: row[2]?.trim() || "",
-            cpf: row[3]?.trim() || "",
-            telefone: row[4]?.trim() || "",
-            email: row[5]?.trim() || "",
-            curso: row[6]?.trim() || "",
-            anos: row[7]?.trim() || "",
-            codigo: row[8]?.trim() || "",
-            categoria: row[9]?.trim() || "",
-            anoVigente: row[10]?.trim() || ""
-        }));
+        return data.values.slice(1)
+            .filter(row => !row[0]?.trim().includes('✅')) // Filtra linhas concluídas
+            .map(row => ({
+                concluido: row[0]?.trim() || "", // Adicione esta linha para debug
+                matricula: row[1]?.trim() || "",
+                nome: row[2]?.trim() || "",
+                cpf: row[3]?.trim() || "",
+                telefone: row[4]?.trim() || "",
+                email: row[5]?.trim() || "",
+                curso: row[6]?.trim() || "",
+                anos: row[7]?.trim() || "",
+                codigo: row[8]?.trim() || "",
+                categoria: row[9]?.trim() || "",
+                anoVigente: row[10]?.trim() || ""
+            }));
     }
 
     // Modifique o loop principal em cadastrarUsuariosSequencialmente:
@@ -57,6 +60,7 @@ class PergamumCadastro {
         const url = "https://pergamumweb.com.br/pergamumweb_ifc/usuario/cadastro_pessoa.zul";
 
         for (const usuario of usuarios) {
+            console.log('Usuários a cadastrar:', usuarios.filter(u => !u.concluido.includes('✅')));
             let tab;
             try {
                 // Abrir nova aba para cada usuário
@@ -149,6 +153,7 @@ class PergamumCadastro {
                             const matricula = getElementByXPath('/html/body/div[1]/div/div/div[1]/table/tbody/tr/td/table/tbody/tr/td[3]/input');
                             if (!matricula) throw new Error('Campo de matrícula não encontrado');
 
+                            await delay(1000);
                             matricula.focus();
                             matricula.value = dados.matricula;
                             matricula.dispatchEvent(new Event('input', { bubbles: true }));
@@ -250,11 +255,32 @@ class PergamumCadastro {
                             const inputValidade = getElementByXPath('/html/body/div[1]/div/div/div[4]/div[2]/div[3]/div[1]/div[3]/table/tbody[1]/tr/td[2]/div/table/tbody/tr/td/table/tbody/tr/td[1]/span/input');
                             inputValidade.focus();
                             await delay(500);
-                            inputValidade.value = "31/12/2025";
+
+                            // Tratamento para anos com decimal
+                            const anos = dados.anos.toString().replace(',', '.'); // Converte vírgula para ponto
+                            const anosNumber = parseFloat(anos);
+                            const anoVigente = parseInt(dados.anoVigente);
+
+                            let dataFinal;
+                            if (Number.isInteger(anosNumber)) {
+                                dataFinal = `31/12/${anoVigente + anosNumber - 1 }`;
+                            } else {
+                                const anosInteiros = Math.floor(anosNumber);
+                                const meses = (anosNumber - anosInteiros) * 12;
+                                const dataBase = new Date(anoVigente + anosInteiros, 11, 31); // 31/12 do ano
+                                dataBase.setMonth(dataBase.getMonth() + Math.round(meses));
+
+                                const dia = dataBase.getDate().toString().padStart(2, '0');
+                                const mes = (dataBase.getMonth() + 1).toString().padStart(2, '0');
+                                const ano = dataBase.getFullYear();
+                                dataFinal = `${dia}/${mes}/${ano-1}`;
+                            }
+
+                            inputValidade.value = dataFinal;
+
                             inputValidade.dispatchEvent(new Event('input', { bubbles: true }));
                             simularBlur(inputValidade);
                             await delay(500);
-
 
                             const btGravarValidade = getElementByXPath('/html/body/div[1]/div/div/div[1]/div/div[1]/button[1]');
                             if (!btGravarValidade) throw new Error('Botão "Gravar Validade" não encontrado');
