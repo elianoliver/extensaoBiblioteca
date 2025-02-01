@@ -52,43 +52,45 @@ class PergamumCadastro {
         }));
     }
 
+    // Modifique o loop principal em cadastrarUsuariosSequencialmente:
     async cadastrarUsuariosSequencialmente(usuarios) {
         const url = "https://pergamumweb.com.br/pergamumweb_ifc/usuario/cadastro_pessoa.zul";
 
-        const tab = await new Promise((resolve) => {
-            chrome.tabs.create({ url }, (tab) => {
-                resolve(tab);
-            });
-        });
-
-        await new Promise((resolve) => {
-            chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
-                if (tabId === tab.id && changeInfo.status === "complete") {
-                    chrome.tabs.onUpdated.removeListener(listener);
-                    resolve();
-                }
-            });
-        });
-
-        // No loop principal (cadastrarUsuariosSequencialmente):
         for (const usuario of usuarios) {
+            let tab;
             try {
-                // Verifique se a aba ainda está ativa
-                const tabAtual = await new Promise(resolve => chrome.tabs.get(tab.id, resolve));
-                if (!tabAtual) throw new Error('A aba foi fechada inesperadamente.');
+                // Abrir nova aba para cada usuário
+                tab = await new Promise((resolve) => {
+                    chrome.tabs.create({ url }, (tab) => {
+                        resolve(tab);
+                    });
+                });
+
+                await new Promise((resolve) => {
+                    chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+                        if (tabId === tab.id && changeInfo.status === "complete") {
+                            chrome.tabs.onUpdated.removeListener(listener);
+                            resolve();
+                        }
+                    });
+                });
 
                 // Execute o cadastro
                 const resultado = await this.cadastrarUsuarioNoPergamum(tab.id, usuario);
                 if (resultado.error) throw new Error(resultado.error);
 
-                await this.delay(3000); // Aumente o delay para 3 segundos
+                await this.delay(3000);
             } catch (error) {
                 console.error(`Erro em ${usuario.nome}:`, error);
-                break; // Interrompe o loop em erros graves
+                break;
+            } finally {
+                // Fechar aba após cada cadastro
+                if (tab && tab.id) {
+                    chrome.tabs.remove(tab.id);
+                    await this.delay(1000); // Espera para garantir fechamento
+                }
             }
         }
-
-        chrome.tabs.remove(tab.id);
     }
 
     cadastrarUsuarioNoPergamum(tabId, dadosUsuario) {
