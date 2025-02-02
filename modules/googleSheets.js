@@ -2,6 +2,7 @@ const contagemAlunos = document.getElementById("contagemAlunos");
 const contagemCursos = document.getElementById("contagemCursos");
 const footer = document.getElementsByTagName("footer")[0];
 
+
 document.getElementById("sheet-button").addEventListener("click", () => {
     mostrarFooter();
     acessarPlanilha();
@@ -12,7 +13,7 @@ function mostrarFooter() {
 }
 
 function acessarPlanilha() {
-    const apiKey = "AIzaSyBB7KyxfvyPIz_NkuoXKc4CDtfHTHI7RbI";
+    const apiKey = "AIzaSyBB7KyxfvyPIz_NkuoXKc4CDtfHTHI7RbI"
     const sheetId = "1luAS2zzqX98O6o4R_sDVk0q7aYhgLyiu2S-s8NLVTbw";
     const range = "C1:K1000";
 
