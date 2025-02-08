@@ -187,18 +187,26 @@ class PergamumCadastro {
                             const cpf = getElementByXPath('/html/body/div[1]/div/div/div[4]/div[2]/div[1]/div[1]/div[3]/table/tbody[1]/tr[5]/td[2]/div/input');
                             const email = getElementByXPath('/html/body/div[1]/div/div/div[4]/div[2]/div[1]/div[1]/div[3]/table/tbody[1]/tr[10]/td/input');
 
-                            // Limpar campos inválidos
-                            telefone.focus();
-                            telefone.value = isInvalidField(dados.telefone) ? '' : dados.telefone;
-                            simularBlur(telefone);
-                            cpf.focus();
-                            cpf.value = isInvalidField(dados.cpf) ? '' : dados.cpf;
-                            simularBlur(cpf);
-                            email.focus();
-                            email.value = isInvalidField(dados.email) ? '' : dados.email;
-                            simularBlur(email);
+                            // Limpar campos inválidos e preencher apenas se estiverem vazios
+                            if (!telefone.value.trim()) {  // Verifica se o campo "telefone" está vazio
+                                telefone.focus();
+                                telefone.value = isInvalidField(dados.telefone) ? '' : dados.telefone;
+                                simularBlur(telefone);
+                            }
 
-                            // Log de campos limpos
+                            if (!cpf.value.trim()) {  // Verifica se o campo "cpf" está vazio
+                                cpf.focus();
+                                cpf.value = isInvalidField(dados.cpf) ? '' : dados.cpf;
+                                simularBlur(cpf);
+                            }
+
+                            if (!email.value.trim()) {  // Verifica se o campo "email" está vazio
+                                email.focus();
+                                email.value = isInvalidField(dados.email) ? '' : dados.email;
+                                simularBlur(email);
+                            }
+
+                            // Log de campos limpos (de acordo com os dados inválidos)
                             const camposLimpos = [];
                             if (isInvalidField(dados.telefone)) camposLimpos.push('Telefone');
                             if (isInvalidField(dados.cpf)) camposLimpos.push('CPF');
@@ -263,7 +271,7 @@ class PergamumCadastro {
 
                             let dataFinal;
                             if (Number.isInteger(anosNumber)) {
-                                dataFinal = `31/12/${anoVigente + anosNumber - 1 }`;
+                                dataFinal = `31/12/${anoVigente + anosNumber - 1}`;
                             } else {
                                 const anosInteiros = Math.floor(anosNumber);
                                 const meses = (anosNumber - anosInteiros) * 12;
@@ -273,7 +281,7 @@ class PergamumCadastro {
                                 const dia = dataBase.getDate().toString().padStart(2, '0');
                                 const mes = (dataBase.getMonth() + 1).toString().padStart(2, '0');
                                 const ano = dataBase.getFullYear();
-                                dataFinal = `${dia}/${mes}/${ano-1}`;
+                                dataFinal = `${dia}/${mes}/${ano - 1}`;
                             }
 
                             inputValidade.value = dataFinal;
